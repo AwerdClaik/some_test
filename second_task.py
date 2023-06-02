@@ -23,8 +23,8 @@ def load_data():
     df.to_csv('/tmp/data.csv', header=False, index=False)
     return '/tmp/data.csv'
 
-load_data_task = PythonOperator(
-    task_id='load_data',
+first_step_load = PythonOperator(
+    task_id='load_to_XCOM',
     python_callable=load_data,
     dag=dag,
 )
@@ -34,11 +34,11 @@ def print_data(**context):
     df = pd.read_csv(file_path, header=None)
     print(df)
 
-print_data_task = PythonOperator(
-    task_id='print_data',
+second_step_print = PythonOperator(
+    task_id='print',
     python_callable=print_data,
     provide_context=True,
     dag=dag,
 )
 
-load_data_task >> print_data_task
+first_step_load >> second_step_print
