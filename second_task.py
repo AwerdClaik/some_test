@@ -24,7 +24,7 @@ def load_data():
     return '/tmp/data.csv'
 
 first_step_load = PythonOperator(
-    task_id='load_to_XCOM',
+    task_id='load_data',
     python_callable=load_data,
     dag=dag,
 )
@@ -35,7 +35,7 @@ def print_data(**context):
     print(df)
 
 second_step_print = PythonOperator(
-    task_id='print',
+    task_id='print_data',
     python_callable=print_data,
     provide_context=True,
     dag=dag,
